@@ -1,0 +1,13 @@
+{
+  "name": "ui-trace",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "elm-live src/Main.elm --open --pushstate --start-page=index.html --dir=public -- --output=public/main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/miyamoen/ui-trace.git"
+  }
+}
