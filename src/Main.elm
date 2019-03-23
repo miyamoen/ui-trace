@@ -3,23 +3,10 @@ module Main exposing (init, update)
 import Browser exposing (Document, UrlRequest(..))
 import Browser.Events
 import Browser.Navigation as Nav exposing (Key)
-import Html
+import Route
+import Types exposing (..)
+import Ui exposing (view)
 import Url exposing (Url)
-
-
-type alias Model =
-    { key : Key, window : Window }
-
-
-type alias Window =
-    { width : Float, height : Float }
-
-
-type Msg
-    = NoOp
-    | ClickedLink UrlRequest
-    | UrlChanged Url
-    | ResizeWindow Int Int
 
 
 main : Program Window Model Msg
@@ -36,7 +23,7 @@ main =
 
 init : Window -> Url -> Key -> ( Model, Cmd Msg )
 init window url key =
-    ( { window = window, key = key }, Cmd.none )
+    ( { window = window, key = key, route = Route.parse url }, Cmd.none )
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -56,7 +43,7 @@ update msg model =
             )
 
         UrlChanged url ->
-            ( model, Cmd.none )
+            ( { model | route = Route.parse url }, Cmd.none )
 
         ResizeWindow w h ->
             ( { model | window = { width = toFloat w, height = toFloat h } }
@@ -67,10 +54,3 @@ update msg model =
 subscriptions : Model -> Sub Msg
 subscriptions model =
     Browser.Events.onResize ResizeWindow
-
-
-view : Model -> Document Msg
-view model =
-    { title = "UI Trace"
-    , body = [ Html.text <| Debug.toString model ]
-    }
